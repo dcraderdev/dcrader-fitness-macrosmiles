@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #07090d;
+  --color-ink-900: #0c1018;
+  --color-ink-800: #141a26;
+  --color-ink-700: #1d2535;
+  --color-ink-600: #2a334a;
+  --color-ink-500: #3a4560;
+  --color-ink-400: #5b6786;
+  --color-ink-300: #8b95b3;
+  --color-ink-200: #b8c0d8;
+  --color-ink-100: #e5e9f5;
+  --color-flame-500: #ff5b14;
+  --color-flame-400: #ff7a3a;
+  --color-flame-300: #ffa06b;
+  --color-volt-400: #c5ff3a;
+  --color-volt-300: #d8ff6e;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    radial-gradient(80rem 50rem at 75% -10%, rgba(255, 91, 20, 0.12), transparent 70%),
+    radial-gradient(60rem 40rem at -10% 30%, rgba(197, 255, 58, 0.06), transparent 70%),
+    var(--color-ink-950);
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--color-flame-500);
+  color: var(--color-ink-950);
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-volt-400);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0.5rem;
+  z-index: 100;
+  background: var(--color-volt-400);
+  color: var(--color-ink-950);
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+.skip-link:focus {
+  left: 0.75rem;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-mono-tnum { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+.pulse-dot { animation: pulseDot 1.8s ease-in-out infinite; }
+
+@keyframes barRise {
+  from { transform: scaleY(0.02); }
+  to { transform: scaleY(1); }
+}
+.bar-rise { transform-origin: bottom; animation: barRise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

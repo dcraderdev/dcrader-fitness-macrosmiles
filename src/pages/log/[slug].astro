@@ -1,0 +1,152 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MacroBar from '../../components/MacroBar.astro';
+import RouteMap from '../../components/RouteMap.astro';
+import { logs } from '../../data/logs';
+
+export function getStaticPaths() {
+  return logs.map(log => ({ params: { slug: log.slug }, props: { log } }));
+}
+
+const { log } = Astro.props;
+const idx = logs.findIndex(l => l.slug === log.slug);
+const prev = idx < logs.length - 1 ? logs[idx + 1] : null;
+const next = idx > 0 ? logs[idx - 1] : null;
+
+const kcalPct = Math.round((log.totalKcal / log.targetKcal) * 100);
+const pPct = Math.round((log.macros.protein / log.macroTargets.protein) * 100);
+const cPct = Math.round((log.macros.carbs / log.macroTargets.carbs) * 100);
+const fPct = Math.round((log.macros.fat / log.macroTargets.fat) * 100);
+---
+<Layout title={`${log.weekday} ${log.date} · ${log.run.title}`} description={`Daily log for ${log.date} — ${log.run.distanceKm} km, ${log.totalKcal.toLocaleString()} kcal, ${log.macros.protein}g protein.`}>
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-6 border-b border-ink-800">
+    <nav aria-label="Breadcrumb" class="text-xs text-ink-400 mb-4">
+      <ol class="flex items-center gap-2 font-mono-tnum">
+        <li><a class="hover:text-flame-300" href="/">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a class="hover:text-flame-300" href="/">Logs</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-ink-200">{log.date}</li>
+      </ol>
+    </nav>
+    <p class="text-xs uppercase tracking-widest text-flame-400 font-semibold">{log.weekday} · {log.date}</p>
+    <h1 class="mt-1 font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-100 tracking-tight">{log.run.title}</h1>
+    <p class="mt-3 text-ink-300 max-w-3xl">{log.run.route} · {log.run.weather}</p>
+
+    <div class="mt-7 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 font-mono-tnum">
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Distance</p><p class="font-display text-xl font-bold text-ink-100">{log.run.distanceKm} <span class="text-xs text-ink-400">km</span></p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Duration</p><p class="font-display text-xl font-bold text-ink-100">{Math.floor(log.run.durationMin/60)}h {log.run.durationMin%60}m</p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Pace</p><p class="font-display text-xl font-bold text-flame-400">{log.run.pace}</p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Avg HR</p><p class="font-display text-xl font-bold text-ink-100">{log.run.avgHr}</p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Max HR</p><p class="font-display text-xl font-bold text-ink-100">{log.run.maxHr}</p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">Elev gain</p><p class="font-display text-xl font-bold text-ink-100">{log.run.elevationM}m</p></div>
+      <div class="rounded-lg bg-ink-800/60 px-3 py-3"><p class="text-[10px] uppercase tracking-wider text-ink-400">RPE</p><p class="font-display text-xl font-bold text-volt-400">{log.run.perceivedEffort}/10</p></div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2">
+      <RouteMap splits={log.run.splits} title="Route + splits" />
+    </div>
+
+    <aside class="space-y-6">
+      <div class="rounded-2xl border border-ink-800 bg-gradient-to-br from-ink-900 to-ink-950 p-5 sm:p-6">
+        <h2 class="font-display text-lg font-semibold text-ink-100">Macros vs target</h2>
+        <p class="mt-1 text-xs text-ink-400 font-mono-tnum">{log.totalKcal.toLocaleString()} / {log.targetKcal.toLocaleString()} kcal · {kcalPct}%</p>
+
+        <div class="mt-5 space-y-4">
+          <div>
+            <div class="flex justify-between text-xs font-mono-tnum text-ink-300 mb-1">
+              <span class="text-flame-400 font-semibold">Protein</span>
+              <span>{log.macros.protein}g / {log.macroTargets.protein}g</span>
+            </div>
+            <div class="h-2 rounded-full bg-ink-800 overflow-hidden">
+              <div class="h-full bg-flame-500" style={`width:${Math.min(pPct,100)}%`}></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs font-mono-tnum text-ink-300 mb-1">
+              <span class="text-volt-400 font-semibold">Carbs</span>
+              <span>{log.macros.carbs}g / {log.macroTargets.carbs}g</span>
+            </div>
+            <div class="h-2 rounded-full bg-ink-800 overflow-hidden">
+              <div class="h-full bg-volt-400" style={`width:${Math.min(cPct,100)}%`}></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs font-mono-tnum text-ink-300 mb-1">
+              <span class="text-ink-200 font-semibold">Fat</span>
+              <span>{log.macros.fat}g / {log.macroTargets.fat}g</span>
+            </div>
+            <div class="h-2 rounded-full bg-ink-800 overflow-hidden">
+              <div class="h-full bg-ink-400" style={`width:${Math.min(fPct,100)}%`}></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-ink-800">
+          <MacroBar protein={log.macros.protein} carbs={log.macros.carbs} fat={log.macros.fat} compact />
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-ink-800 bg-gradient-to-br from-ink-900 to-ink-950 p-5 sm:p-6">
+        <h2 class="font-display text-lg font-semibold text-ink-100">Recovery</h2>
+        <dl class="mt-4 grid grid-cols-2 gap-3 font-mono-tnum text-sm">
+          <div class="rounded-lg bg-ink-800/60 px-3 py-3"><dt class="text-[10px] uppercase tracking-wider text-ink-400">Sleep</dt><dd class="font-display text-xl font-bold text-ink-100">{log.sleepHours}h</dd></div>
+          <div class="rounded-lg bg-ink-800/60 px-3 py-3"><dt class="text-[10px] uppercase tracking-wider text-ink-400">Hydration</dt><dd class="font-display text-xl font-bold text-ink-100">{log.hydrationL}L</dd></div>
+          <div class="rounded-lg bg-ink-800/60 px-3 py-3"><dt class="text-[10px] uppercase tracking-wider text-ink-400">Body mass</dt><dd class="font-display text-xl font-bold text-ink-100">{log.bodyMassKg}kg</dd></div>
+          <div class="rounded-lg bg-ink-800/60 px-3 py-3"><dt class="text-[10px] uppercase tracking-wider text-ink-400">RHR</dt><dd class="font-display text-xl font-bold text-ink-100">{log.rhrBpm} bpm</dd></div>
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">
+    <div class="rounded-2xl border border-ink-800 bg-gradient-to-br from-ink-900 to-ink-950 p-5 sm:p-6">
+      <h2 class="font-display text-lg font-semibold text-ink-100 mb-5">Meals — {log.meals.length} logged</h2>
+      <ol class="divide-y divide-ink-800">
+        {log.meals.map(m => (
+          <li class="grid sm:grid-cols-12 gap-3 sm:gap-4 py-4 items-center">
+            <p class="sm:col-span-1 text-xs font-mono-tnum text-ink-400">{m.time}</p>
+            <div class="sm:col-span-5">
+              <p class="text-sm font-semibold text-ink-100">{m.name}</p>
+              {m.notes && <p class="text-xs text-ink-400 mt-0.5">{m.notes}</p>}
+            </div>
+            <p class="sm:col-span-2 font-display font-bold text-flame-400 font-mono-tnum">{m.kcal} <span class="text-[10px] text-ink-400 font-sans">kcal</span></p>
+            <div class="sm:col-span-4 font-mono-tnum text-xs flex gap-3">
+              <span><span class="text-flame-400">P</span> {m.macros.protein}g</span>
+              <span><span class="text-volt-400">C</span> {m.macros.carbs}g</span>
+              <span><span class="text-ink-300">F</span> {m.macros.fat}g</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {log.notes && (
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10">
+      <div class="rounded-2xl border-l-4 border-flame-500 bg-ink-900/60 p-5 sm:p-6">
+        <p class="text-xs uppercase tracking-widest text-flame-400 font-semibold mb-2">Athlete notes</p>
+        <p class="text-ink-100 text-lg italic">"{log.notes}"</p>
+      </div>
+    </section>
+  )}
+
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
+    <nav class="grid sm:grid-cols-2 gap-3" aria-label="Previous and next log">
+      {prev ? (
+        <a href={`/log/${prev.slug}/`} class="rounded-xl border border-ink-800 hover:border-flame-500/40 bg-ink-900/40 p-5 transition-colors">
+          <p class="text-xs uppercase tracking-widest text-ink-400 font-semibold">← Previous</p>
+          <p class="mt-1 font-semibold text-ink-100">{prev.weekday} · {prev.run.title}</p>
+        </a>
+      ) : <div></div>}
+      {next ? (
+        <a href={`/log/${next.slug}/`} class="rounded-xl border border-ink-800 hover:border-flame-500/40 bg-ink-900/40 p-5 transition-colors sm:text-right">
+          <p class="text-xs uppercase tracking-widest text-ink-400 font-semibold">Next →</p>
+          <p class="mt-1 font-semibold text-ink-100">{next.weekday} · {next.run.title}</p>
+        </a>
+      ) : <div></div>}
+    </nav>
+  </section>
+</Layout>

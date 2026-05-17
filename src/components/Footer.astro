@@ -1,0 +1,42 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="mt-24 border-t border-ink-800 bg-ink-950/80">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-2 font-display font-bold text-ink-100 text-lg">
+          <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M4 22 L10 14 L14 19 L20 9 L28 22" stroke="#ff5b14" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="9" r="2.5" fill="#c5ff3a"/>
+          </svg>
+          Macros<span class="text-flame-500">+</span>Miles
+        </div>
+        <p class="mt-3 text-sm text-ink-300 max-w-xs">A run+nutrition log built for athletes who want both pages on the same screen.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <h2 class="text-xs uppercase tracking-widest text-ink-400 font-semibold">Explore</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><a class="text-ink-200 hover:text-flame-300" href="/">Home</a></li>
+          <li><a class="text-ink-200 hover:text-flame-300" href="/log/2026-05-16/">Latest log</a></li>
+          <li><a class="text-ink-200 hover:text-flame-300" href="/plan/">Plan</a></li>
+          <li><a class="text-ink-200 hover:text-flame-300" href="/about/">About</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2 class="text-xs uppercase tracking-widest text-ink-400 font-semibold">Accessibility</h2>
+        <p class="mt-4 text-sm text-ink-300">
+          We aim for WCAG 2.2 AA. Found a barrier?{' '}
+          <a class="text-volt-400 underline underline-offset-4 hover:text-volt-300" href="mailto:accessibility@macrosmiles.dcrader.dev">
+            accessibility@macrosmiles.dcrader.dev
+          </a>
+        </p>
+        <p class="mt-2 text-xs text-ink-400">Statement last reviewed 2026-05-17.</p>
+      </div>
+    </div>
+    <div class="mt-10 pt-6 border-t border-ink-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-ink-400">
+      <p>© {year} Macros + Miles. Mock data — for portfolio demonstration.</p>
+      <p>Built with Astro · Tailwind · deployed on Vercel.</p>
+    </div>
+  </div>
+</footer>

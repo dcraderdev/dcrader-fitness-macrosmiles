@@ -1,0 +1,42 @@
+---
+interface Props {
+  protein: number;
+  carbs: number;
+  fat: number;
+  totalKcal?: number;
+  compact?: boolean;
+}
+const { protein, carbs, fat, totalKcal, compact = false } = Astro.props;
+// kcal from macros: P 4, C 4, F 9
+const pK = protein * 4;
+const cK = carbs * 4;
+const fK = fat * 9;
+const total = pK + cK + fK;
+const pPct = (pK / total) * 100;
+const cPct = (cK / total) * 100;
+const fPct = (fK / total) * 100;
+---
+<div class={compact ? 'space-y-2' : 'space-y-3'}>
+  <div class="flex h-3 w-full overflow-hidden rounded-full bg-ink-800" role="img" aria-label={`Macro split: ${Math.round(pPct)}% protein, ${Math.round(cPct)}% carbs, ${Math.round(fPct)}% fat`}>
+    <span class="bg-flame-500" style={`width:${pPct}%`}></span>
+    <span class="bg-volt-400" style={`width:${cPct}%`}></span>
+    <span class="bg-ink-400" style={`width:${fPct}%`}></span>
+  </div>
+  <dl class={`grid grid-cols-3 gap-2 text-xs ${compact ? '' : 'sm:text-sm'} font-mono-tnum`}>
+    <div class="rounded-md bg-ink-800/60 px-2 py-1.5">
+      <dt class="text-flame-400 font-semibold uppercase tracking-wider">Protein</dt>
+      <dd class="text-ink-100">{protein}g <span class="text-ink-400">· {Math.round(pPct)}%</span></dd>
+    </div>
+    <div class="rounded-md bg-ink-800/60 px-2 py-1.5">
+      <dt class="text-volt-400 font-semibold uppercase tracking-wider">Carbs</dt>
+      <dd class="text-ink-100">{carbs}g <span class="text-ink-400">· {Math.round(cPct)}%</span></dd>
+    </div>
+    <div class="rounded-md bg-ink-800/60 px-2 py-1.5">
+      <dt class="text-ink-200 font-semibold uppercase tracking-wider">Fat</dt>
+      <dd class="text-ink-100">{fat}g <span class="text-ink-400">· {Math.round(fPct)}%</span></dd>
+    </div>
+  </dl>
+  {totalKcal && (
+    <p class="text-xs text-ink-300 font-mono-tnum">{totalKcal.toLocaleString()} kcal total</p>
+  )}
+</div>

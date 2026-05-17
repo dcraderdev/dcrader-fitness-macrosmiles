@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="About" description="About Macros + Miles — the philosophy, the stack, and the accessibility commitment.">
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+    <p class="text-xs uppercase tracking-widest text-volt-400 font-semibold">About</p>
+    <h1 class="mt-2 font-display text-4xl sm:text-5xl font-bold text-ink-100 tracking-tight">One screen for fuel and effort.</h1>
+    <p class="mt-6 text-lg text-ink-300 leading-relaxed">
+      Macros + Miles started with a simple frustration: I was tracking runs in one app, macros in another, sleep in a third, and stitching it together in a spreadsheet on Sundays. The training was good. The picture was fragmented.
+    </p>
+    <p class="mt-5 text-ink-300 leading-relaxed">
+      This site puts the workout and the meal log side by side, day by day. No social feed. No streaks. Just the numbers that move the race result.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-10">
+    <h2 class="font-display text-2xl font-bold text-ink-100">What you'll find here</h2>
+    <ul class="mt-5 space-y-3 text-ink-200">
+      <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-flame-500 shrink-0" aria-hidden="true"></span>Daily run logs with splits, pace, heart rate, elevation, and athlete notes.</li>
+      <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-flame-500 shrink-0" aria-hidden="true"></span>Macro and calorie tracking that's pinned to training day type.</li>
+      <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-flame-500 shrink-0" aria-hidden="true"></span>A weekly plan that shows workouts and meal templates in one calendar.</li>
+      <li class="flex gap-3"><span class="mt-1.5 w-2 h-2 rounded-full bg-flame-500 shrink-0" aria-hidden="true"></span>Recovery metrics — sleep, hydration, RHR, body mass — under every log.</li>
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-10">
+    <h2 class="font-display text-2xl font-bold text-ink-100">Stack</h2>
+    <div class="mt-5 flex flex-wrap gap-2 font-mono-tnum text-xs">
+      {['Astro 6', 'Tailwind CSS 4', 'TypeScript', 'Vercel', 'Inline SVG data viz'].map(s => (
+        <span class="inline-flex items-center rounded-full border border-ink-700 bg-ink-900/60 px-3 py-1.5 text-ink-200">{s}</span>
+      ))}
+    </div>
+    <p class="mt-5 text-sm text-ink-400">Mock data — this site is a portfolio demonstration. The data structure is real-shaped; the numbers are illustrative.</p>
+  </section>
+
+  <section id="accessibility" class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
+    <h2 class="font-display text-2xl font-bold text-ink-100">Accessibility statement</h2>
+    <p class="mt-4 text-ink-300 leading-relaxed">
+      Macros + Miles is built to meet <strong class="text-ink-100">WCAG 2.2 Level AA</strong>. Every page is keyboard navigable, every interactive element has a visible focus state, color contrast meets AA, charts and visualizations carry text equivalents, and motion respects the <span class="font-mono-tnum text-volt-300">prefers-reduced-motion</span> setting.
+    </p>
+    <p class="mt-4 text-ink-300 leading-relaxed">
+      We deliberately avoid scroll-triggered "pop-in" effects so content is available immediately and to assistive technologies without waiting on intersection observers. Above-the-fold imagery and fonts are preloaded.
+    </p>
+    <p class="mt-4 text-ink-300 leading-relaxed">
+      Found a barrier? Email <a class="text-volt-400 underline underline-offset-4 hover:text-volt-300" href="mailto:accessibility@macrosmiles.dcrader.dev">accessibility@macrosmiles.dcrader.dev</a> — we aim to respond inside two business days.
+    </p>
+    <p class="mt-6 text-xs text-ink-400 font-mono-tnum">Statement last reviewed: 2026-05-17.</p>
+  </section>
+</Layout>

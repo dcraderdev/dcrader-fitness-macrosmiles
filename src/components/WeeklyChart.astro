@@ -1,0 +1,33 @@
+---
+import { logs } from '../data/logs';
+// last 7, oldest -> newest
+const last7 = [...logs].slice(0, 7).reverse();
+const maxKm = Math.max(...last7.map(l => l.run.distanceKm), 1);
+---
+<div class="rounded-2xl border border-ink-800 bg-gradient-to-br from-ink-900 to-ink-950 p-5 sm:p-6">
+  <div class="flex items-baseline justify-between flex-wrap gap-2">
+    <h2 class="font-display text-lg font-semibold text-ink-100">Distance · last 7 days</h2>
+    <p class="text-xs text-ink-400 font-mono-tnum">km per session</p>
+  </div>
+  <div class="mt-6 grid grid-cols-7 gap-2 sm:gap-3" aria-hidden="true">
+    {last7.map(l => {
+      const pct = (l.run.distanceKm / maxKm) * 100;
+      const isRest = l.run.distanceKm === 0;
+      return (
+        <div class="flex flex-col items-center gap-2">
+          <div class="relative flex h-44 w-full items-end">
+            <div
+              class={`bar-rise w-full rounded-t-md ${isRest ? 'bg-ink-700' : 'bg-gradient-to-t from-flame-500 to-flame-300'}`}
+              style={`height:${Math.max(pct, 3)}%`}
+            ></div>
+          </div>
+          <p class="text-[10px] sm:text-xs font-mono-tnum text-ink-200">{isRest ? 'rest' : l.run.distanceKm.toFixed(1)}</p>
+          <p class="text-[10px] uppercase tracking-wider text-ink-400">{l.weekday}</p>
+        </div>
+      );
+    })}
+  </div>
+  <p class="sr-only">
+    Daily distances: {last7.map(l => `${l.weekday} ${l.run.distanceKm} km`).join(', ')}.
+  </p>
+</div>
