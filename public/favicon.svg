@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#07090d" rx="6"/><path d="M4 22 L10 14 L14 19 L20 9 L28 22" stroke="#ff5b14" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="9" r="2.5" fill="#c5ff3a"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" shape-rendering="geometricPrecision">
+  <circle cx="256" cy="256" r="244" fill="none" stroke="#FCA5A5" stroke-width="12" opacity="0.55"/>
+  <circle cx="256" cy="256" r="232" fill="#B91C1C"/>
+  <text x="256" y="256" text-anchor="middle" dominant-baseline="central" font-family="-apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="320" fill="#FFFFFF" letter-spacing="-6">M</text>
+</svg>
