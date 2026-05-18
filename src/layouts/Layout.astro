@@ -35,6 +35,10 @@ const canonical = new URL(Astro.url.pathname, 'https://macrosmiles.dcrader.dev')
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
     <script src="/template-topheader.js" defer></script>
+    <style>
+      /* Offset for portfolio bar (#dcrader-th, 34px fixed top:0) injected by template-topheader.js */
+      body { padding-top: 34px; }
+    </style>
   </head>
   <body class="min-h-dvh flex flex-col">
     <a class="skip-link" href="#main">Skip to main content</a>
