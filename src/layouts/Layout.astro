@@ -26,7 +26,9 @@ const canonical = new URL(Astro.url.pathname, 'https://macrosmiles.dcrader.dev')
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL('/og-image.png', Astro.site).toString()} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL('/og-image.png', Astro.site).toString()} />
     <meta name="theme-color" content="#07090d" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
