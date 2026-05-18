@@ -43,6 +43,11 @@ body {
   color: var(--color-ink-950);
 }
 
+*:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible,
