@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://macrosmiles.dcrader.dev/sitemap-index.xml
