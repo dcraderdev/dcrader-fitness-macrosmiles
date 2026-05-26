@@ -12,24 +12,24 @@ const nav = [
   { href: '/about/', label: 'About' },
 ];
 ---
-<header class="sticky top-0 z-40 bg-ink-950/85 backdrop-blur-md border-b border-ink-800">
+<header class="sticky top-[34px] z-40 bg-ink-950/85 backdrop-blur-md border-b border-ink-800">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <a href="/" class="flex items-center gap-2.5 font-display font-bold text-ink-100" aria-label="Macros and Miles home">
+    <div class="flex items-center justify-between gap-3 h-16">
+      <a href="/" class="flex items-center gap-2.5 font-display font-bold text-ink-100 shrink-0" aria-label="Macros and Miles home">
         <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
           <path d="M4 22 L10 14 L14 19 L20 9 L28 22" stroke="#ff5b14" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="20" cy="9" r="2.5" fill="#c5ff3a"/>
         </svg>
         <span class="text-lg tracking-tight">Macros<span class="text-flame-500">+</span>Miles</span>
       </a>
-      <nav aria-label="Primary">
-        <ul class="flex items-center gap-1 sm:gap-2 text-sm">
+      <nav aria-label="Primary" class="-mx-2 overflow-x-auto">
+        <ul class="flex items-center gap-0.5 sm:gap-2 px-2 text-sm">
           {nav.map(item => (
-            <li>
+            <li class="flex-none">
               <a
                 href={item.href}
                 aria-current={isActive(item.href) ? 'page' : undefined}
-                class={`px-3 py-2 rounded-md font-medium transition-colors ${isActive(item.href) ? 'text-flame-400 bg-ink-800/60' : 'text-ink-200 hover:text-ink-100 hover:bg-ink-800/40'}`}
+                class={`inline-block whitespace-nowrap px-2.5 sm:px-3 py-2 rounded-md font-medium transition-colors ${isActive(item.href) ? 'text-flame-400 bg-ink-800/60' : 'text-ink-200 hover:text-ink-100 hover:bg-ink-800/40'}`}
               >{item.label}</a>
             </li>
           ))}
