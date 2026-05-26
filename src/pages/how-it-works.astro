@@ -1,0 +1,299 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = 'How it works';
+const pageDescription =
+  'Macros + Miles in five steps — the daily workflow that keeps your training, your nutrition, and your recovery on the same page from the moment you wake up to the moment you log your last meal.';
+
+const steps = [
+  {
+    n: '01',
+    title: 'Open the day',
+    blurb: 'Every morning, your dashboard greets you with three numbers — yesterday\'s mileage, last night\'s sleep, and today\'s target calorie band — pulled from the run you logged the day before and the plan your coach (or you) set at the start of the block.',
+    long: 'The dashboard is the only screen you have to open to know whether to push or pull back. If your sleep is below your seven-day baseline by more than thirty minutes, the target band shifts to the recovery preset automatically. If yesterday\'s training stress score crosses your fitness threshold, the carb target nudges up by 8% before you even tie your shoes.',
+  },
+  {
+    n: '02',
+    title: 'Eat against a target, not a goal',
+    blurb: 'Macros + Miles does not show you a calorie deficit. It shows you a daily target band — a 250-calorie window calibrated to the run you have scheduled today, not the one you finished yesterday.',
+    long: 'A long-run Saturday and a recovery Tuesday should not share a target. Most apps treat them the same, then ask you to manually adjust. We do the math from your training plan, your last seven days of actuals, and your goal weight curve, and we land you inside a band that matches the demand of the day. You hit the band. That is the only metric that matters.',
+  },
+  {
+    n: '03',
+    title: 'Log a meal in seven seconds',
+    blurb: 'The fastest meal logger we could build. Open the app, hit +, speak the meal — "three eggs, one slice sourdough, half avocado" — and the entry lands fully macro-split and timestamped to the minute.',
+    long: 'Voice entry is powered on-device, so a meal logged in a dead-zone cabin gets queued and synced when you find signal. Recurring meals — your usual Sunday oats, your post-long-run shake — are one tap. The seven-second target is real; we measured against the median entry across two weeks of beta users and that is what we landed on.',
+  },
+  {
+    n: '04',
+    title: 'Run, then attach the run to the meal',
+    blurb: 'When your watch finishes a run and uploads to Strava, Garmin, or COROS, the run appears in your log within sixty seconds. We auto-attach it to the meal window it sits in — pre-run breakfast, mid-run gels, post-run shake — so your fueling lines up with the work.',
+    long: 'Attachment matters more than you think. A 90-minute long run fueled with 22g of carbs an hour does not show its outcome in the calorie ledger; it shows up in your splits at minute 75. By attaching meals to runs we can show you the relationship over weeks: how your last 60 minutes split out as you raised in-run carb intake from 30g to 60g. That is the kind of correlation a single-purpose app cannot make.',
+  },
+  {
+    n: '05',
+    title: 'Read the week, not the day',
+    blurb: 'Sunday night, your week closes with a single screen. Mileage, average pace, sleep, calories, protein floor, longest run, and the one variable the app thinks moved most. Not a list of every meal — a paragraph of plain English.',
+    long: 'The weekly summary is the page we are proudest of. It is short on purpose. It tells you the one thing that changed, points to the next thing to watch, and stays out of your way the other six days. Most users find they stop checking the daily numbers after a month and check only the Sunday summary — which is the goal. The training and the eating should become a habit; the app should become quiet.',
+  },
+];
+
+const integrations = [
+  { name: 'Strava', detail: 'OAuth, two-way sync, full activity history' },
+  { name: 'Garmin Connect', detail: 'OAuth, runs sync within 60 seconds of upload' },
+  { name: 'COROS', detail: 'OAuth, including indoor treadmill calibration' },
+  { name: 'Apple Health', detail: 'Sleep, resting HR, body weight read; macros write' },
+  { name: 'Google Fit', detail: 'Sleep and weight read-only' },
+  { name: 'Whoop', detail: 'Recovery score pulled into the daily target shift' },
+];
+
+const stack = [
+  { label: 'Training plan input', detail: 'Paste a plan, import a coach.cc file, or build week-by-week — the planner reads all three.' },
+  { label: 'Adaptive macro targets', detail: 'Protein floor, fat minimum, carb target. Targets shift on the day, not at the end of the week.' },
+  { label: 'In-run fueling log', detail: 'Time-stamped gels, drinks, and chews — auto-rolled into the day total.' },
+  { label: 'Recovery surface', detail: 'Sleep band, resting HR trend, and a single "go / soft / pull" recommendation each morning.' },
+  { label: 'Body composition trend', detail: 'Weekly weight average smoothed against your menstrual or training cycle, not your daily noise.' },
+];
+
+const faqs = [
+  {
+    q: 'Do I have to weigh my food?',
+    a: 'No. The library uses USDA portion sizes for non-weighed entries — a "medium banana" is 118g, a "slice of sourdough" is 56g. If you weigh, you get a tighter band; if you eyeball, the app rounds in your favor by about 5% so you do not over-restrict on bad estimates.',
+  },
+  {
+    q: 'Does this work for non-runners?',
+    a: 'It works, but it is not what we built it for. The training-aware target adjustment is calibrated against running training stress. Cyclists and rowers will get reasonable estimates; lifters and CrossFitters should look elsewhere.',
+  },
+  {
+    q: 'What happens if I skip a day?',
+    a: 'Nothing. There is no streak counter, no shame badge, no reminder that escalates. The app catches up when you come back. Most of our users skip Sundays during taper weeks and we built the dashboard to absorb that without throwing the trend lines.',
+  },
+  {
+    q: 'Can I share my log with a coach?',
+    a: 'Yes. Coaches get a read-only seat for free. You give them a link, they get the same weekly summary you do, plus the daily detail if you want them to see it. No coach upsell, no separate billing, no enterprise tier.',
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden border-b border-ink-800">
+    <div class="absolute inset-0 -z-10 opacity-60 pointer-events-none" aria-hidden="true">
+      <svg class="absolute -top-20 -right-20 w-[720px] h-[720px]" viewBox="0 0 600 600" fill="none">
+        <circle cx="300" cy="300" r="220" stroke="#ff5b14" stroke-opacity="0.15" stroke-width="1"/>
+        <circle cx="300" cy="300" r="260" stroke="#ff5b14" stroke-opacity="0.08" stroke-width="1"/>
+        <circle cx="300" cy="300" r="180" stroke="#c5ff3a" stroke-opacity="0.12" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-12">
+      <p class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-volt-400 font-semibold mb-5">
+        <span class="pulse-dot w-2 h-2 rounded-full bg-volt-400"></span>
+        Five steps · One screen each
+      </p>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-ink-100 leading-[1.05] tracking-tight max-w-3xl">
+        How <span class="text-flame-500">Macros + Miles</span> actually works.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-ink-200 leading-relaxed">
+        Most logging apps make you do the math, then chart the math. We do the math and tell
+        you what to do tomorrow. Here is the daily loop in five steps — the same loop our
+        beta users settled into within the first week.
+      </p>
+      <p class="mt-4 max-w-2xl text-base text-ink-300 leading-relaxed">
+        Read top to bottom in five minutes. By the end you will know if Macros + Miles fits
+        your training, your appetite for data, and your patience for one more app on your
+        phone.
+      </p>
+
+      <nav aria-label="Jump to step" class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        <span class="text-ink-400">Skip ahead:</span>
+        {steps.map((s) => (
+          <a href={`#step-${s.n}`} class="text-volt-400 hover:text-volt-300 underline underline-offset-4 decoration-volt-400/40">{s.n} · {s.title}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+    <ol class="space-y-14 sm:space-y-20">
+      {steps.map((step, i) => (
+        <li id={`step-${step.n}`} class="grid lg:grid-cols-12 gap-8 lg:gap-12 scroll-mt-24">
+          <!-- Number column -->
+          <div class="lg:col-span-3">
+            <div class="sticky top-24">
+              <p class="font-display text-7xl sm:text-8xl font-bold leading-none">
+                <span class="text-flame-500">{step.n}</span>
+              </p>
+              <p class="mt-3 text-xs uppercase tracking-widest text-ink-400 font-semibold">Step {i + 1} of {steps.length}</p>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="lg:col-span-9">
+            <h2 class="font-display text-3xl sm:text-4xl font-bold text-ink-100 tracking-tight leading-tight">
+              {step.title}
+            </h2>
+            <p class="mt-5 text-lg text-ink-200 leading-relaxed max-w-3xl">
+              {step.blurb}
+            </p>
+            <p class="mt-4 text-base text-ink-300 leading-relaxed max-w-3xl">
+              {step.long}
+            </p>
+
+            <!-- Inline visual -->
+            <div class="mt-6 max-w-3xl rounded-2xl border border-ink-800 bg-ink-900/70 p-5 sm:p-6 font-mono-tnum">
+              {step.n === '01' && (
+                <div class="grid grid-cols-3 gap-4">
+                  <div>
+                    <p class="text-[10px] uppercase tracking-widest text-ink-400">Yesterday</p>
+                    <p class="font-display text-2xl text-ink-100 mt-1">14.2 <span class="text-sm text-ink-400">km</span></p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] uppercase tracking-widest text-ink-400">Sleep</p>
+                    <p class="font-display text-2xl text-ink-100 mt-1">7h 12m</p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] uppercase tracking-widest text-ink-400">Target band</p>
+                    <p class="font-display text-2xl text-volt-400 mt-1">2,680 <span class="text-sm text-ink-400">± 250</span></p>
+                  </div>
+                </div>
+              )}
+              {step.n === '02' && (
+                <div>
+                  <p class="text-[10px] uppercase tracking-widest text-ink-400 mb-2">Today's band — long-run Saturday</p>
+                  <div class="h-3 rounded-full bg-ink-800 overflow-hidden relative">
+                    <div class="absolute inset-y-0 left-[35%] right-[20%] bg-gradient-to-r from-flame-500/60 via-volt-400/60 to-flame-500/60"></div>
+                    <div class="absolute inset-y-0 left-[58%] w-0.5 bg-ink-100"></div>
+                  </div>
+                  <div class="mt-2 flex justify-between text-xs text-ink-400">
+                    <span>2,200</span><span class="text-ink-100">3,140 logged</span><span>3,800</span>
+                  </div>
+                </div>
+              )}
+              {step.n === '03' && (
+                <div>
+                  <p class="text-[10px] uppercase tracking-widest text-flame-400 font-semibold">+ Add meal · voice</p>
+                  <p class="mt-1 text-ink-100 italic">"three eggs, one slice sourdough, half avocado"</p>
+                  <div class="mt-3 grid grid-cols-4 gap-2 text-center">
+                    <div class="rounded bg-ink-800 py-1.5"><p class="text-[9px] uppercase text-ink-400">P</p><p class="text-sm text-ink-100">24</p></div>
+                    <div class="rounded bg-ink-800 py-1.5"><p class="text-[9px] uppercase text-ink-400">C</p><p class="text-sm text-ink-100">28</p></div>
+                    <div class="rounded bg-ink-800 py-1.5"><p class="text-[9px] uppercase text-ink-400">F</p><p class="text-sm text-ink-100">26</p></div>
+                    <div class="rounded bg-flame-500/15 py-1.5 ring-1 ring-flame-500/40"><p class="text-[9px] uppercase text-flame-300">kcal</p><p class="text-sm text-flame-300">442</p></div>
+                  </div>
+                </div>
+              )}
+              {step.n === '04' && (
+                <ul class="space-y-2">
+                  <li class="flex items-center justify-between text-sm">
+                    <span class="text-ink-100">06:12 · pre-run oats + banana</span>
+                    <span class="text-ink-400">↦ run window</span>
+                  </li>
+                  <li class="flex items-center justify-between text-sm">
+                    <span class="text-flame-300">07:38 · mid-run gels ×2</span>
+                    <span class="text-flame-400">↦ during run</span>
+                  </li>
+                  <li class="flex items-center justify-between text-sm">
+                    <span class="text-ink-100">09:05 · recovery shake</span>
+                    <span class="text-ink-400">↦ post-run 90m</span>
+                  </li>
+                </ul>
+              )}
+              {step.n === '05' && (
+                <div>
+                  <p class="text-[10px] uppercase tracking-widest text-volt-400 font-semibold mb-2">Week 11 — closing summary</p>
+                  <p class="text-ink-200 text-sm leading-relaxed">
+                    62.8 km across 5 runs · avg pace 5:18/km · sleep average 7:01 · 18,640 kcal · protein floor hit 6 of 7 days. The variable that moved most this week was <span class="text-volt-300">mid-run carb intake</span>, up from 38g to 54g/hour — your long-run last 10k split was 7 seconds faster on the same effort. Hold that fueling next week.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- WHAT'S UNDER THE HOOD -->
+  <section class="border-t border-ink-800 bg-gradient-to-b from-ink-950 to-ink-900">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-4">
+          <p class="text-xs uppercase tracking-widest text-flame-400 font-semibold">Under the hood</p>
+          <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold text-ink-100 tracking-tight">What the app actually tracks.</h2>
+          <p class="mt-5 text-ink-300 leading-relaxed">
+            Five surfaces. Each one earns its space because removing it would force you back
+            into a second app. The unifying rule: if a number cannot affect what you do
+            tomorrow, it does not get a tile.
+          </p>
+        </div>
+        <div class="lg:col-span-8 space-y-4">
+          {stack.map((row) => (
+            <div class="rounded-xl border border-ink-800 bg-ink-900/60 p-5 hover:border-volt-400/40 transition-colors">
+              <p class="text-sm uppercase tracking-widest text-volt-400 font-semibold">{row.label}</p>
+              <p class="mt-2 text-ink-200 leading-relaxed">{row.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section class="border-t border-ink-800">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div class="flex items-end justify-between flex-wrap gap-3 mb-8">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-flame-400 font-semibold">Integrations</p>
+          <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold text-ink-100 tracking-tight">What plugs in.</h2>
+        </div>
+        <p class="text-sm text-ink-400 max-w-md">All integrations are read-write where supported, OAuth-only — no scraping, no password storage.</p>
+      </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {integrations.map((integ) => (
+          <li class="rounded-xl border border-ink-800 bg-ink-900/40 p-5">
+            <p class="font-display text-lg text-ink-100 font-semibold">{integ.name}</p>
+            <p class="mt-1.5 text-sm text-ink-300 leading-relaxed">{integ.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-ink-800 bg-gradient-to-b from-ink-900 to-ink-950">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+      <p class="text-xs uppercase tracking-widest text-flame-400 font-semibold">Common questions</p>
+      <h2 class="mt-2 font-display text-3xl sm:text-4xl font-bold text-ink-100 tracking-tight">Before you sign up.</h2>
+      <dl class="mt-8 divide-y divide-ink-800">
+        {faqs.map((faq) => (
+          <div class="py-6">
+            <dt class="font-display text-xl text-ink-100 font-semibold">{faq.q}</dt>
+            <dd class="mt-2 text-ink-300 leading-relaxed">{faq.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-t border-ink-800 bg-gradient-to-r from-ink-950 via-ink-900 to-ink-950">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+      <div class="rounded-2xl border border-ink-800 bg-ink-900/60 p-8 sm:p-10 grid sm:grid-cols-3 gap-6 items-center">
+        <div class="sm:col-span-2">
+          <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink-100 tracking-tight">See it on a real week.</h2>
+          <p class="mt-2 text-ink-300">The latest training log walks through every step of the loop above with actual numbers from week 11.</p>
+        </div>
+        <div class="flex sm:justify-end">
+          <a href="/log/2026-05-16/" class="inline-flex items-center gap-2 bg-volt-400 text-ink-950 font-bold px-5 py-3 rounded-lg hover:bg-volt-300 transition-colors">
+            Open today's log
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+</content>
+</invoke>
